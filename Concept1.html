@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Langit Pustaka</title>
+  <style>
+    /* ===== VARIABEL TEMA ===== */
+    :root {
+      --bg: #f8f9fa;
+      --surface: #ffffff;
+      --accent: #4361ee;
+      --text: #212529;
+      --text-light: #6c757d;
+      --shadow: rgba(0, 0, 0, 0.08);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 16px;
+      --space-lg: 24px;
+      --space-xl: 32px;
+      --transition: all 0.3s ease;
+    }
+
+    [data-theme="dark"] {
+      --bg: #121212;
+      --surface: #1e1e1e;
+      --accent: #4895ef;
+      --text: #e9ecef;
+      --text-light: #adb5bd;
+      --shadow: rgba(0, 0, 0, 0.2);
+    }
+
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      transition: var(--transition);
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      opacity: 0.85;
+    }
+
+    button, input {
+      font-family: inherit;
+    }
+
+    /* ===== KOMPONEN UMUM ===== */
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 var(--space-md);
+    }
+
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: var(--radius-md);
+      padding: var(--space-sm) var(--space-md);
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px var(--shadow);
+      opacity: 1;
+      text-decoration: none;
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      background: var(--surface);
+      padding: var(--space-md) 0;
+      box-shadow: 0 4px 12px var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .header-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: var(--space-md);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+
+    .logo img {
+      width: 38px;
+      height: 38px;
+      border-radius: 0%;
+    }
+
+    .logo span {
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      flex-wrap: wrap;
+    }
+
+    .nav-link {
+      color: var(--text);
+      font-weight: 500;
+      padding: var(--space-sm) var(--space-md);
+      border-radius: var(--radius-md);
+    }
+
+    .nav-link:hover {
+      background: var(--bg);
+    }
+
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-toggle {
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-weight: 500;
+      padding: var(--space-sm) var(--space-md);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .dropdown-toggle:hover {
+      background: var(--bg);
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: var(--surface);
+      border-radius: var(--radius-md);
+      box-shadow: 0 4px 12px var(--shadow);
+      min-width: 160px;
+      margin-top: 4px;
+      z-index: 1001;
+      overflow: hidden;
+    }
+
+    .dropdown:hover .dropdown-menu,
+    .dropdown:focus-within .dropdown-menu {
+      display: block;
+    }
+
+    .dropdown-item {
+      display: block;
+      padding: var(--space-sm) var(--space-md);
+      color: var(--text);
+    }
+
+    .dropdown-item:hover {
+      background: var(--bg);
+    }
+
+    .search-input {
+      padding: var(--space-sm) var(--space-md);
+      border: 1px solid var(--text-light);
+      border-radius: 30px;
+      background: var(--surface);
+      color: var(--text);
+      min-width: 200px;
+      outline: none;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+    }
+
+    .theme-toggle {
+      background: transparent;
+      border: 1px solid var(--text-light);
+      color: var(--text);
+      border-radius: var(--radius-md);
+      padding: var(--space-sm) var(--space-md);
+      cursor: pointer;
+    }
+
+    /* ===== SEARCH RESULTS ===== */
+    #searchResults {
+      max-width: 1100px;
+      margin: var(--space-md) auto;
+      padding: var(--space-lg);
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 4px 12px var(--shadow);
+      display: none;
+    }
+
+    .results-title {
+      color: var(--accent);
+      margin: 0 0 var(--space-md) 0;
+      font-size: 1.3rem;
+    }
+
+    .book-list {
+      display: flex;
+      gap: var(--space-md);
+      overflow-x: auto;
+      padding-bottom: var(--space-md);
+      scroll-behavior: smooth;
+    }
+
+    .book-list::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .book-list::-webkit-scrollbar-thumb {
+      background: var(--accent);
+      border-radius: 3px;
+    }
+
+    .book-list::-webkit-scrollbar-track {
+      background: var(--bg);
+      border-radius: 3px;
+    }
+
+    .book-card {
+      flex: 0 0 160px;
+      background: var(--surface);
+      border-radius: var(--radius-md);
+      box-shadow: 0 4px 8px var(--shadow);
+      padding: var(--space-md);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .book-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 16px var(--shadow);
+    }
+
+    .book-card img {
+      width: 80px;
+      height: 120px;
+      border-radius: var(--radius-sm);
+      margin-bottom: var(--space-sm);
+      object-fit: cover;
+    }
+
+    .book-title {
+      font-weight: 600;
+      margin-bottom: var(--space-xs);
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+
+    .book-category {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      margin-bottom: var(--space-sm);
+    }
+
+    .no-results {
+      text-align: center;
+      padding: var(--space-lg);
+      color: var(--text-light);
+      font-style: italic;
+    }
+
+    /* ===== HERO SECTION ===== */
+    .hero {
+      text-align: center;
+      padding: var(--space-xl) var(--space-md);
+      margin-bottom: var(--space-xl);
+    }
+
+    .hero h1 {
+      font-size: 2.2rem;
+      margin-bottom: var(--space-sm);
+      color: var(--accent);
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto var(--space-lg) auto;
+    }
+
+    /* ===== CAROUSEL ===== */
+    .carousel {
+      position: relative;
+      max-width: 600px;
+      height: 320px;
+      margin: var(--space-lg) auto 0;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 8px 24px var(--shadow);
+    }
+
+    .carousel-inner {
+      height: 100%;
+      position: relative;
+    }
+
+    .carousel-item {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .carousel-item.active {
+      display: block;
+    }
+
+    .carousel-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .carousel-caption {
+      position: absolute;
+      bottom: var(--space-lg);
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      color: white;
+      padding: var(--space-md);
+      border-radius: var(--radius-md);
+      text-align: center;
+      max-width: 80%;
+    }
+
+    .carousel-caption h3 {
+      margin: 0 0 var(--space-sm) 0;
+    }
+
+    .carousel-control {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.3);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+      font-size: 1.2rem;
+    }
+
+    .carousel-control:hover {
+      background: rgba(0, 0, 0, 0.5);
+    }
+
+    .carousel-control.prev {
+      left: var(--space-md);
+    }
+
+    .carousel-control.next {
+      right: var(--space-md);
+    }
+
+    .carousel-indicators {
+      position: absolute;
+      bottom: var(--space-sm);
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: var(--space-sm);
+      z-index: 10;
+    }
+
+    .indicator {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+    }
+
+    .indicator.active {
+      background: white;
+      transform: scale(1.2);
+    }
+
+    /* ===== CONTENT SECTIONS ===== */
+    .section {
+      margin-bottom: var(--space-xl);
+    }
+
+    .section-title {
+      color: var(--accent);
+      margin-top: 0;
+      margin-bottom: var(--space-md);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .header-container {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .logo {
+        justify-content: center;
+        margin-bottom: var(--space-sm);
+      }
+
+      .nav-container {
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .search-input {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .hero h1 {
+        font-size: 1.8rem;
+      }
+
+      .carousel {
+        height: 250px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .nav-link, .dropdown-toggle, .theme-toggle {
+        padding: var(--space-xs) var(--space-sm);
+        font-size: 0.9rem;
+      }
+
+      .hero p {
+        font-size: 1rem;
+      }
+
+      .book-card {
+        flex: 0 0 140px;
+      }
+    }
+    
+    /* ===== FOOTER ===== */
+    footer {
+      background: var(--surface);
+      padding: var(--space-lg) 0;
+      margin-top: auto;
+      text-align: center;
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      box-shadow: 0 -4px 12px var(--shadow);
+    }
+
+    footer p {
+      margin: var(--space-sm) 0;
+      color: var(--text-light);
+      font-size: 0.9rem;
+    }
+
+    footer a {
+      color: var(--accent);
+      font-weight: 500;
+      transition: var(--transition);
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 480px) {
+      footer {
+        padding: var(--space-md) 0;
+      }
+      
+      footer p {
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+</head>
+<body data-theme="light">
+
+  <!-- Header -->
+  <header>
+    <div class="container header-container">
+      <div class="logo">
+        <img src="Image/Logo.svg" alt="Logo Langit Pustaka" />
+        <span>Langit Pustaka</span>
+      </div>
+      <div class="nav-container">
+        <a href="#" class="nav-link" id="homeLink">Beranda</a>
+        <div class="dropdown">
+          <button class="dropdown-toggle">Kategori</button>
+          <div class="dropdown-menu">
+            <a href="#" class="dropdown-item" data-category="Fiksi">Fiksi</a>
+            <a href="#" class="dropdown-item" data-category="Edukasi">Edukasi</a>
+            <a href="#" class="dropdown-item" data-category="Self Improvement">Self Improvement</a>
+          </div>
+        </div>
+        <input type="text" class="search-input" id="searchInput" placeholder="Cari buku..." aria-label="Cari buku berdasarkan judul" />
+        <button class="theme-toggle" id="themeToggle">Mode Terang</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Search Results -->
+  <section id="searchResults" class="container">
+    <!-- Hasil pencarian akan ditampilkan di sini -->
+  </section>
+
+  <!-- Main Content -->
+  <main class="container">
+    <!-- Hero Section -->
+    <section class="hero card">
+      <h1>Selamat Datang di Langit Pustaka</h1>
+      <p>Koleksi buku digital terbaik untuk Anda, kapan saja, di mana saja.</p>
+
+      <!-- Carousel -->
+      <div class="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active" data-book-id="1">
+            <img src="image/Perahu Kertas.jpg" alt="Buku Unggulan 1" />
+            <div class="carousel-caption">
+              <h3>Perahu Kertas</h3>
+              <a href="#" class="btn book-link" data-link="https://onedrive.live.com/?id=root&cid=harry-potter">Baca Sekarang</a>
+            </div>
+          </div>
+          <div class="carousel-item" data-book-id="2">
+            <img src="Image/The Midnight Library.jpg" alt="Buku Unggulan 2" />
+            <div class="carousel-caption">
+              <h3>The Midnight Library</h3>
+              <a href="#" class="btn book-link" data-link="https://drive.google.com/file/d/atomic-habits">Baca Sekarang</a>
+            </div>
+          </div>
+          <div class="carousel-item" data-book-id="3">
+            <img src="Image/Filosofi Teras.jpg" alt="Buku Unggulan 3" />
+            <div class="carousel-caption">
+              <h3>Filosofi Teras</h3>
+              <a href="#" class="btn book-link" data-link="https://drive.google.com/file/d/filosofi-teras">Baca Sekarang</a>
+            </div>
+          </div>
+        </div>
+        <button class="carousel-control prev" aria-label="Buku sebelumnya">&lt;</button>
+        <button class="carousel-control next" aria-label="Buku berikutnya">&gt;</button>
+        <div class="carousel-indicators">
+          <span class="indicator active" data-index="0"></span>
+          <span class="indicator" data-index="1"></span>
+          <span class="indicator" data-index="2"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Welcome Section -->
+    <section class="section card">
+      <h2 class="section-title">Tentang Kami</h2>
+      <p>Langit Pustaka adalah perpustakaan digital yang menyediakan akses ke berbagai koleksi buku berkualitas. Kami berkomitmen untuk memberikan layanan terbaik bagi para pembaca dari segala usia.</p>
+    </section>
+
+    <!-- Vision & Mission -->
+    <section class="section card">
+      <h2 class="section-title">Visi & Misi</h2>
+      <p>Menjadi sumber pengetahuan yang mudah diakses untuk semua orang, memperluas wawasan dan menginspirasi generasi masa depan melalui literasi digital yang berkualitas.</p>
+    </section>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Langit Pustaka. All rights reserved.</p>
+      <p>Hubungi kami di <a href="mailto:abdullahsyamsidar@gmail.com">abdullahsyamsidar@gmail.com</a> | 
+         <a href="https://wa.me/+6289639301997" target="_blank">Request via WhatsApp</a></p>
+    </div>
+  </footer>
+
+  <script>
+    // Data buku untuk pencarian dan filter dengan link ke OneDrive/Google Drive
+    const bookData = [
+      { id: 1, title: "Perahu Kertas", category: "Fiksi", image: "image/Perahu Kertas.jpg", link: "https://onedrive.live.com/?id=root&cid=harry-potter" },
+      { id: 2, title: "Dilan", category: "Fiksi", image: "image/Dilan.jpg", link: "https://drive.google.com/file/d/rich-dad-poor-dad" },
+      { id: 3, title: "The Midnight Library", category: "Fiksi", image: "image/The Midnight Library.jpg", link: "https://drive.google.com/file/d/rich-dad-poor-dad" },
+      { id: 4, title: "Who Moved My Cheese?", category: "Self Improvement", image: "image/Who Moved My Cheese.jpg", link: "https://drive.google.com/file/d/atomic-habits" },
+      { id: 5, title: "Filosofi Teras", category: "Self Improvement", image: "image/Filosofi Teras.jpg", link: "https://drive.google.com/file/d/filosofi-teras" },
+      { id: 6, title: "Thinking, Fast and Slow", category: "Self Improvement", image: "image/Thinking, Fast and Slow.jpg", link: "https://drive.google.com/file/d/filosofi-teras" },
+      { id: 7, title: "Metode Penelitian Kuantitatif, Kualitatif & Penelitian Gabungan", category: "Edukasi", image: "image/Metode Penelitian Kuantitatif, Kualitatif & Penelitian Gabungan.jpg", link: "https://onedrive.live.com/?id=root&cid=biologi-dasar" },
+      { id: 8, title: "Pendidikan Karakter Anak: Sesuai Pembelajaran Abad ke-21", category: "Edukasi", image: "image/Pendidikan Karakter Anak.jpg", link: "https://onedrive.live.com/?id=root&cid=biologi-dasar" },
+      { id: 8, title: "Teori-Teori Manajemen Sumber Daya Manusia", category: "Edukasi", image: "image/Teori Manajemen SDM.png", link: "https://onedrive.live.com/?id=root&cid=biologi-dasar" },
+    ];
+
+    // Elemen DOM
+    const searchInput = document.getElementById('searchInput');
+    const searchResults = document.getElementById('searchResults');
+    const homeLink = document.getElementById('homeLink');
+    const themeToggle = document.getElementById('themeToggle');
+    const categoryItems = document.querySelectorAll('.dropdown-item');
+    const carouselItems = document.querySelectorAll('.carousel-item');
+    const carouselIndicators = document.querySelectorAll('.indicator');
+    const prevControl = document.querySelector('.carousel-control.prev');
+    const nextControl = document.querySelector('.carousel-control.next');
+    const bookLinks = document.querySelectorAll('.book-link');
+
+    // Fungsi untuk menampilkan hasil pencarian atau filter
+    function displayBooks(books, title = "Hasil Pencarian") {
+      searchResults.innerHTML = '';
+      searchResults.style.display = books.length > 0 ? 'block' : 'none';
+
+      if (books.length > 0) {
+        searchResults.innerHTML = `
+          <h2 class="results-title">${title}</h2>
+          <div class="book-list">
+            ${books.map(book => `
+              <div class="book-card">
+                <img src="${book.image}" alt="${book.title}" />
+                <div class="book-title">${book.title}</div>
+                <div class="book-category">${book.category}</div>
+                <a href="${book.link}" target="_blank" class="btn">Baca Sekarang</a>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      } else {
+        searchResults.innerHTML = `
+          <h2 class="results-title">${title}</h2>
+          <p class="no-results">Tidak ada hasil yang ditemukan.</p>
+        `;
+        searchResults.style.display = 'block';
+      }
+    }
+
+    // Event listener untuk pencarian
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.toLowerCase();
+      if (query.trim() === '') {
+        searchResults.style.display = 'none';
+        return;
+      }
+      const filteredBooks = bookData.filter(book => book.title.toLowerCase().includes(query));
+      displayBooks(filteredBooks);
+    });
+
+    // Event listener untuk kategori
+    categoryItems.forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        const category = item.getAttribute('data-category');
+        const filteredBooks = bookData.filter(book => book.category === category);
+        displayBooks(filteredBooks, `Kategori: ${category}`);
+      });
+    });
+
+    // Event listener untuk Beranda
+    homeLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      searchResults.style.display = 'none';
+      searchInput.value = '';
+    });
+
+    // Event listener untuk toggle tema
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = document.body.getAttribute('data-theme');
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      document.body.setAttribute('data-theme', newTheme);
+      themeToggle.textContent = newTheme === 'light' ? 'Mode Terang' : 'Mode Gelap';
+    });
+
+    // Logika Carousel
+    let currentIndex = 0;
+    const totalItems = carouselItems.length;
+
+    function updateCarousel() {
+      carouselItems.forEach((item, index) => {
+        item.classList.toggle('active', index === currentIndex);
+      });
+      carouselIndicators.forEach((indicator, index) => {
+        indicator.classList.toggle('active', index === currentIndex);
+      });
+    }
+
+    prevControl.addEventListener('click', () => {
+      currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+      updateCarousel();
+    });
+
+    nextControl.addEventListener('click', () => {
+      currentIndex = (currentIndex + 1) % totalItems;
+      updateCarousel();
+    });
+
+    carouselIndicators.forEach(indicator => {
+      indicator.addEventListener('click', () => {
+        currentIndex = parseInt(indicator.getAttribute('data-index'));
+        updateCarousel();
+      });
+    });
+
+    // Auto-slide carousel setiap 5 detik
+    setInterval(() => {
+      currentIndex = (currentIndex + 1) % totalItems;
+      updateCarousel();
+    }, 5000);
+
+    // Event listener untuk tautan buku di carousel
+    bookLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const url = link.getAttribute('data-link');
+        window.open(url, '_blank');
+      });
+    });
+  </script>
+</body>
+</html>
